@@ -11,22 +11,61 @@ class LoginController:
 	#Class variables
 	REPO_URI = ''
 	STATUS_CODE = 0
+	USERNAME = ''
 
 	#Object Initiated
 	def __init__(self):
-		log_count = 3
-		while log_count:
-			self.readRepo()
-			self.getColab()
-			if self.STATUS_CODE == 200:
-				break
-			else:
-				if log_count-1:
-					print 'Try again'
-			log_count = log_count - 1
+		login_status = self.loginCheck()
+		if not login_status:
+			log_count = 3
+			while log_count:
+				self.readRepo()
+				self.getColab()
+				if self.STATUS_CODE == 200:
+					break
+				elif self.STATUS_CODE == 401:
+					if log_count-1:
+						print 'Wront Credentials'
+				else:
+					if log_count-1:
+						print 'Not part of this repo'
+				log_count = log_count - 1
 
-		if not log_count:
-			raise SystemExit('Try again later!!')
+			if not log_count:
+				raise SystemExit('Try again later!!')
+			else:
+				#Logged in successfuly
+				gitchatrc = open('.gitchatrc','w')
+				import datetime
+				now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+				content = """[status] = 200
+[username] = %s
+[logged_in] = %s
+				""" % (self.USERNAME,now)
+				gitchatrc.write(content)
+		else:
+			import datetime
+			now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+			f = open('.gitchatrc').read()
+			endi = f.find('[logged')+len('[logged_in] = ')
+			content = f[:endi]+now
+			gitchatrc = open('.gitchatrc','w')
+			gitchatrc.write(content)
+			self.setUser(f.split('\n')[1])
+
+	#method to setUsername from file
+	def setUser(self,l):
+		starti = len('[username] = ')
+		self.USERNAME = l[starti:].strip()
+
+	#method to read .gitchatrc and get status
+	def loginCheck(self):
+		try:
+			f = open('.gitchatrc').readline()
+			status = f.split('=')[1].strip()
+			return status == '200'
+		except IOError:
+			return False
 
 
 
@@ -40,6 +79,7 @@ class LoginController:
 	def getColab(self):
 		from getpass import getpass
 		username = raw_input('Enter your github username: ')
+		self.USERNAME = username
 		password = getpass('Enter your password for "'+username+'": ')
 		starti = self.REPO_URI.find('github.com/')+len('github.com/')
 		endi = self.REPO_URI.find('.git')

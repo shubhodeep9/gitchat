@@ -7,7 +7,8 @@ A simple echo client
 from login import LoginController
 
 def main():
-	LoginController()
+	login = LoginController()
+	print login.USERNAME
 
 # import socket 
 
