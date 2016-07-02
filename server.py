@@ -1,51 +1,49 @@
-import select 
-import socket 
-import sys 
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Copyright 2016 Shubhodeep Mukherjee
+# All Rights Reserved.
+#
+#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+#    not use this file except in compliance with the License. You may obtain
+#    a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#    License for the specific language governing permissions and limitations
+#    under the License.
 
-host = 'localhost' # what address is the server listening on 
-port = 65535 # what port the server accepts connections on
-backlog = 5  # how many connections to accept
-maxsize = 1024 # Max receive buffer size, in bytes, per recv() call
 
-#now initialize the server and accept connections at localhost:50000
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server.bind((host,port)) 
-server.listen(backlog) 
-input = [server,] #a list of all connections we want to check for data 
-                  #each time we call select.select()
+from twisted.protocols import basic
 
 
-#http://stackoverflow.com/a/18724673 refer for many to one
-running = 1 #set running to zero to close the server
-while running: 
-  inputready,outputready,exceptready = select.select(input,[],[]) 
 
-  for s in inputready: #check each socket that select() said has available data
+class MyChat(basic.LineReceiver):
+    def connectionMade(self):
+        print "Got new client!"
+        self.factory.clients.append(self)
 
-    if s == server: #if select returns our server socket, there is a new 
-                    #remote socket trying to connect
-      client, address = server.accept() 
-      input.append(client) #add it to the socket list so we can check it now
-      print 'new client added%s'%str(address) 
+    def connectionLost(self, reason):
+        print "Lost a client!"
+        self.factory.clients.remove(self)
 
-    else: 
-      # select has indicated that these sockets have data available to recv
-      data = s.recv(maxsize) 
-      if data:
-        print '%s received from %s'%(data,s.getsockname())
-        s.send(data)
-        if data == 'BYE':
-        	s.close()
-        	input.remove(s)
-        #Uncomment below to echo the recv'd data back 
-        #to the sender... loopback!
-        #s.send(data) 
-      else: #if recv() returned NULL, that usually means the sender wants
-            #to close the socket. 
-        s.close() 
-        input.remove(s) 
+    def dataReceived(self, line):
+        print "received", repr(line)
+        for c in self.factory.clients:
+            c.message(line)
 
-#if running is ever set to zero, we will call this
-server.close()
+    def message(self, message):
+        self.transport.write(message + '\n')
+
+
+from twisted.internet import protocol
+from twisted.application import service, internet
+
+factory = protocol.ServerFactory()
+factory.protocol = MyChat
+factory.clients = []
+
+application = service.Application("chatserver")
+internet.TCPServer(1025, factory).setServiceParent(application)
