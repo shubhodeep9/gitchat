@@ -1,3 +1,20 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Copyright 2016 Shubhodeep Mukherjee
+# All Rights Reserved.
+#
+#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+#    not use this file except in compliance with the License. You may obtain
+#    a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#    License for the specific language governing permissions and limitations
+#    under the License.
+
 """
 Controller for Sign In Verification
 ALGORITHM:
@@ -40,8 +57,9 @@ class LoginController:
 				now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 				content = """[status] = 200
 [username] = %s
+[repo_uri] = %s
 [logged_in] = %s
-				""" % (self.USERNAME,now)
+				""" % (self.USERNAME,self.REPO_URI,now)
 				gitchatrc.write(content)
 		else:
 			import datetime
@@ -51,12 +69,14 @@ class LoginController:
 			content = f[:endi]+now
 			gitchatrc = open('.gitchatrc','w')
 			gitchatrc.write(content)
-			self.setUser(f.split('\n')[1])
+			self.setUser(f.split('\n')[1],f.split('\n')[2])
 
 	#method to setUsername from file
-	def setUser(self,l):
+	def setUser(self,l,m):
 		starti = len('[username] = ')
 		self.USERNAME = l[starti:].strip()
+		starti = len('[repo_uri] = ')
+		self.REPO_URI = l[starti:].strip()
 
 	#method to read .gitchatrc and get status
 	def loginCheck(self):
