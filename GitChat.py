@@ -7,8 +7,17 @@ A simple echo client
 from login import LoginController
 
 def main():
+	checkDirectory()
 	login = LoginController()
 	print login.USERNAME
+
+
+#method to check if directory is a git repo
+def checkDirectory():
+	try:
+		open('.git/config')
+	except IOError:
+		raise SystemExit('Not a git repo')
 
 # import socket 
 
