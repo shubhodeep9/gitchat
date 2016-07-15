@@ -30,7 +30,7 @@ DB
 import pymongo
 from twisted.protocols import basic
 
-db = pymongo.Connection().gitchat
+db = pymongo.MongoClient().gitchat
 
 class GitChat(basic.LineReceiver):
     def dataReceived(self, line):
