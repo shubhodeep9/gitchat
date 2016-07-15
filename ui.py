@@ -10,7 +10,7 @@ import threading
 
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('127.0.0.1',1025))
+s.connect(('localhost',1025))
 
  
 class FocusMixin(object):
@@ -91,7 +91,7 @@ You can also asynchronously output messages with Commander.output('message') """
               ('magenta', urwid.DARK_MAGENTA, urwid.BLACK), ]
     
     
-    def __init__(self, title, command_caption='Command:  (Tab to switch focus to upper frame, where you can scroll text)', max_size=1000):
+    def __init__(self, title,login, command_caption='Command: (Tab to switch focus to upper frame, where you can scroll text)\nType exit or quit to close', max_size=1000):
         self.header=urwid.Text(title)
         self.model=urwid.SimpleListWalker([])
         self.body=ListView(self.model, lambda: self._update_focus(False), max_size=max_size )
@@ -107,6 +107,7 @@ You can also asynchronously output messages with Commander.output('message') """
         urwid.connect_signal(self.input,'line_entered',self.on_line_entered)
         self._output_styles=[s[0] for s in self.PALLETE]
         self.eloop=None
+        self.login = login
         
     def loop(self, handle_mouse=False):
         self.eloop=urwid.MainLoop(self, self.PALLETE, handle_mouse=handle_mouse)
@@ -114,7 +115,11 @@ You can also asynchronously output messages with Commander.output('message') """
         self.eloop.run()
         
     def on_line_entered(self,line):
-        s.send(line)
+        if line in ['exit','quit']:
+            s.send('exit '+self.login.USERNAME+' '+self.login.REPO_URI)
+            s.close()
+            raise urwid.ExitMainLoop()
+        s.send('['+self.login.USERNAME+']: '+line+' '+self.login.REPO_URI)
     
     def output(self, line, style=None):
         if style and style in self._output_styles:
@@ -145,11 +150,14 @@ You can also asynchronously output messages with Commander.output('message') """
     
 class Execute(Commander):
     def __init__(self,login):
-        c=Commander('['+login.USERNAME+'] GitChat @'+login.REPO_URI)
+        s.send("first "+login.REPO_URI)
+        c=Commander('['+login.USERNAME+'] GitChat @'+login.REPO_URI, login)
         def run():
             while True:
                 msg = s.recv(4096)
-                c.output(msg[:len(msg)-1], 'blue')
+                msg = msg.split(' ')
+                msg = ' '.join(msg[:len(msg)-1])
+                c.output(msg, 'blue')
     
         t=Thread(target=run)
         t.daemon=True
