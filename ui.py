@@ -151,8 +151,7 @@ class Execute(Commander):
         def run():
             while True:
                 msg = s.recv(4096)
-                msg = msg.split(' ')
-                msg = ' '.join(msg[:len(msg)-1])
+                msg = msg.replace(login.REPO_URI,'')
                 c.output(msg, 'blue')
     
         t=Thread(target=run)
