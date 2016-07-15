@@ -58,10 +58,10 @@ class GitChat(basic.LineReceiver):
             repo = line.split(' ')
             repo = repo[len(repo)-1]
             for c in self.factory.clients[repo]:
-                c.message(line)
+                c.transport.write(message)
+            self.message(line)
 
     def message(self, message):
-        self.transport.write(message)
         content = message.split(' ')
         db.chat_db.insert({'repo':content[len(content)-1],'message':' '.join(content[:len(content)-1])})
 
