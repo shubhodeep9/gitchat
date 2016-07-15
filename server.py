@@ -58,7 +58,7 @@ class GitChat(basic.LineReceiver):
             repo = line.split(' ')
             repo = repo[len(repo)-1]
             for c in self.factory.clients[repo]:
-                c.transport.write(message)
+                c.transport.write(line)
             self.message(line)
 
     def message(self, message):
