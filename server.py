@@ -54,8 +54,6 @@ class GitChat(basic.LineReceiver):
             user = line.split(' ')[1]
             repo = line.split(' ')[2]
             self.factory.clients[repo].remove(self)
-            for c in self.factory.clients[repo]:
-                c.transport.write(user+' signed off '+repo)
         else:
             repo = line.split(' ')
             repo = repo[len(repo)-1]

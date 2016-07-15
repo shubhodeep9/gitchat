@@ -1,8 +1,4 @@
-'''
-Created on Aug 2, 2015
 
-@author: ivan
-'''
 import urwid
 from collections import deque
 from threading import Thread
@@ -10,7 +6,7 @@ import threading
 
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('localhost',1025))
+s.connect(('go-myvit.eastasia.cloudapp.azure.com',1025))
 
  
 class FocusMixin(object):
