@@ -152,7 +152,12 @@ class Execute(Commander):
             while True:
                 msg = s.recv(4096)
                 msg = msg.replace(login.REPO_URI,'')
-                c.output(msg, 'blue')
+                li = msg.split('\n')
+                for i in li:
+                    if login.USERNAME in i.split(' ')[0]:
+                        c.output(i, 'green')
+                    else:
+                        c.output(i, 'blue')
     
         t=Thread(target=run)
         t.daemon=True
