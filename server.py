@@ -19,12 +19,18 @@
 clients = {
     "some":[]
 }
+
+DB
+{
+    message: "",
+    repo:"",
+}
 """
 
-
+import pymongo
 from twisted.protocols import basic
 
-
+db = pymongo.Connection().gitchat
 
 class GitChat(basic.LineReceiver):
     def dataReceived(self, line):
@@ -37,6 +43,11 @@ class GitChat(basic.LineReceiver):
                         break
                 if ct==0:
                     self.factory.clients[line.split(' ')[1]].append(self)
+
+                # DB fetch
+                result = db.chat_db.find({'repo':line.split(' ')[1]})
+                for i in result:
+                    self.transport.write(str(i['message']+' '+line.split(' ')[1]+'\n'))
             except KeyError:
                 self.factory.clients[line.split(' ')[1]] = [self]
         elif line.split(' ')[0] == 'exit':
@@ -44,7 +55,7 @@ class GitChat(basic.LineReceiver):
             repo = line.split(' ')[2]
             self.factory.clients[repo].remove(self)
             for c in self.factory.clients[repo]:
-                c.message(user+' signed off')
+                c.transport.write(user+' signed off '+repo)
         else:
             repo = line.split(' ')
             repo = repo[len(repo)-1]
@@ -52,7 +63,9 @@ class GitChat(basic.LineReceiver):
                 c.message(line)
 
     def message(self, message):
-        self.transport.write(message + '\n')
+        self.transport.write(message)
+        content = message.split(' ')
+        db.chat_db.insert({'repo':content[len(content)-1],'message':' '.join(content[:len(content)-1])})
 
 
 from twisted.internet import protocol
