@@ -22,6 +22,8 @@ import os
 from login import LoginController
 from ui import *
 
+__version__ = '0.0.1'
+
 def main():
 	checkDirectory()
 	login = LoginController()
