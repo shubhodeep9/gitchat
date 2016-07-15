@@ -103,7 +103,10 @@ class LoginController:
 		password = getpass('Enter your password for "'+username+'": ')
 		starti = self.REPO_URI.find('github.com/')+len('github.com/')
 		endi = self.REPO_URI.find('.git')
-		Owner_Repo = self.REPO_URI[starti:endi]
+		if '.git' in self.REPO_URI:
+			Owner_Repo = self.REPO_URI[starti:endi]
+		else:
+			Owner_Repo = self.REPO_URI[starti:]
 		gituri = 'https://api.github.com/repos/'+Owner_Repo+'/collaborators'
 		from requests import get
 		req = get(gituri, auth=(username,password))

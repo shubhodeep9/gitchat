@@ -42,7 +42,7 @@ setup(
     author_email='shubhodeep9@gmail.com',
     url='https://github.com/shubhodeep9/python-netstat',
     license='Apache License, Version 2.0',
-    install_requires=["urwid"],
+    install_requires=["urwid","requests"],
     py_modules=["GitChat","login","ui"],
     entry_points={
         'console_scripts': [
