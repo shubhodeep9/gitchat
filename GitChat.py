@@ -20,15 +20,14 @@ A simple echo client
 """ 
 import os
 from login import LoginController
+from ui import *
 
 def main():
 	checkDirectory()
 	login = LoginController()
 	if not os.system('clear') == 0:
 		os.system('cls')
-	message = """ Welcome %s to the chat of %s
-""" % (login.USERNAME,login.REPO_URI)
-	client(login.USERNAME,message)
+	Execute(login)
 	
 
 #method to check if directory is a git repo
@@ -38,30 +37,6 @@ def checkDirectory():
 	except IOError:
 		raise SystemExit('Not a git repo')
 
-
-
-
-def client(username,message):
-	import thread
-	import socket 
-	import os
-
-	host = '' 
-	port = 1025 
-	size = 1024 
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-	s.connect((host,port)) 
-	ls = []
-	while 1:
-		inp = raw_input('Enter: ')
-		s.send('['+username+']:'+inp)
-		os.system('clear')
-		print message
-		data = s.recv(size)
-		ls.append(data)
-		print '\n'.join(ls)
-
-	s.close()
 
 if __name__ == '__main__':
 	main()

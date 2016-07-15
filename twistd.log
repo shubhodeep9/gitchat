@@ -1,0 +1,131 @@
+2016-07-15T15:44:55+0530 [-] Loading server.py...
+2016-07-15T15:44:55+0530 [-] Loaded.
+2016-07-15T15:44:55+0530 [twisted.scripts._twistd_unix.UnixAppLogger#info] twistd 16.2.0 (/usr/bin/python 2.7.11) starting up.
+2016-07-15T15:44:55+0530 [twisted.scripts._twistd_unix.UnixAppLogger#info] reactor class: twisted.internet.epollreactor.EPollReactor.
+2016-07-15T15:44:55+0530 [-] ServerFactory starting on 1025
+2016-07-15T15:44:55+0530 [twisted.internet.protocol.ServerFactory#info] Starting factory <twisted.internet.protocol.ServerFactory instance at 0x7f26960bc878>
+2016-07-15T15:46:24+0530 [stdout#info] Got new client!
+2016-07-15T15:46:28+0530 [stdout#info] received 'hey'
+2016-07-15T15:46:49+0530 [stdout#info] Got new client!
+2016-07-15T15:46:53+0530 [stdout#info] received 'hey'
+2016-07-15T15:47:00+0530 [stdout#info] received 'how are you'
+2016-07-15T15:47:08+0530 [stdout#info] received 'wow'
+2016-07-15T15:47:52+0530 [stdout#info] Lost a client!
+2016-07-15T15:48:06+0530 [stdout#info] Lost a client!
+2016-07-15T15:52:22+0530 [stdout#info] Got new client!
+2016-07-15T15:52:24+0530 [stdout#info] Lost a client!
+2016-07-15T15:56:06+0530 [stdout#info] Got new client!
+2016-07-15T15:56:36+0530 [stdout#info] Lost a client!
+2016-07-15T15:57:34+0530 [stdout#info] Got new client!
+2016-07-15T15:57:37+0530 [stdout#info] Lost a client!
+2016-07-15T15:58:36+0530 [stdout#info] Got new client!
+2016-07-15T15:58:39+0530 [stdout#info] Lost a client!
+2016-07-15T15:59:22+0530 [stdout#info] Got new client!
+2016-07-15T15:59:39+0530 [stdout#info] Lost a client!
+2016-07-15T16:00:06+0530 [stdout#info] Got new client!
+2016-07-15T16:00:09+0530 [stdout#info] Lost a client!
+2016-07-15T16:01:04+0530 [stdout#info] Got new client!
+2016-07-15T16:01:07+0530 [stdout#info] received 'hey'
+2016-07-15T16:01:11+0530 [stdout#info] received 'hey'
+2016-07-15T16:01:24+0530 [stdout#info] received 'hey'
+2016-07-15T16:01:29+0530 [stdout#info] received 'hey'
+2016-07-15T16:01:30+0530 [stdout#info] received 'hey'
+2016-07-15T16:01:31+0530 [stdout#info] received 'hey'
+2016-07-15T16:01:32+0530 [stdout#info] received 'hey'
+2016-07-15T16:01:34+0530 [stdout#info] Lost a client!
+2016-07-15T16:01:47+0530 [stdout#info] Got new client!
+2016-07-15T16:01:49+0530 [stdout#info] received 'echo hey'
+2016-07-15T16:02:08+0530 [stdout#info] received 'echo wow'
+2016-07-15T16:02:15+0530 [stdout#info] received 'echo wow'
+2016-07-15T16:02:17+0530 [stdout#info] received 'echo wow'
+2016-07-15T16:02:18+0530 [stdout#info] received 'echo wow'
+2016-07-15T16:02:19+0530 [stdout#info] received 'echo wow'
+2016-07-15T16:02:19+0530 [stdout#info] received 'echo wow'
+2016-07-15T16:02:21+0530 [stdout#info] received 'echo wow'
+2016-07-15T16:02:23+0530 [stdout#info] Lost a client!
+2016-07-15T16:04:48+0530 [stdout#info] Got new client!
+2016-07-15T16:04:49+0530 [stdout#info] received 'hey'
+2016-07-15T16:04:50+0530 [stdout#info] received 'wow'
+2016-07-15T16:04:54+0530 [stdout#info] received 'this is awesome'
+2016-07-15T16:05:23+0530 [stdout#info] Got new client!
+2016-07-15T16:05:24+0530 [stdout#info] received 'hey'
+2016-07-15T16:05:33+0530 [stdout#info] received 'This chat is awesome right'
+2016-07-15T16:05:38+0530 [stdout#info] received 'ya it is'
+2016-07-15T16:05:41+0530 [stdout#info] Lost a client!
+2016-07-15T16:05:45+0530 [stdout#info] Got new client!
+2016-07-15T16:05:47+0530 [stdout#info] received 'haha'
+2016-07-15T16:05:57+0530 [stdout#info] received "isn't it the best thing ever"
+2016-07-15T16:06:09+0530 [stdout#info] received 'ya it is'
+2016-07-15T16:06:17+0530 [stdout#info] received 'well lets sort it out'
+2016-07-15T16:06:24+0530 [stdout#info] received 'haha'
+2016-07-15T16:07:22+0530 [stdout#info] received 'well whats up'
+2016-07-15T16:07:27+0530 [stdout#info] received 'nothing much'
+2016-07-15T16:07:31+0530 [stdout#info] received 'cool'
+2016-07-15T16:07:36+0530 [stdout#info] received 'ok'
+2016-07-15T16:07:43+0530 [stdout#info] received 'bye'
+2016-07-15T16:07:48+0530 [stdout#info] received 'bye'
+2016-07-15T16:07:49+0530 [stdout#info] received 'bye'
+2016-07-15T16:07:50+0530 [stdout#info] received 'bye'
+2016-07-15T16:07:52+0530 [stdout#info] received 'bye'
+2016-07-15T16:08:17+0530 [stdout#info] Lost a client!
+2016-07-15T16:08:19+0530 [stdout#info] Lost a client!
+2016-07-15T16:10:34+0530 [stdout#info] Got new client!
+2016-07-15T16:10:36+0530 [stdout#info] received 'hey'
+2016-07-15T16:10:40+0530 [stdout#info] received 'this app is awesome'
+2016-07-15T16:10:47+0530 [stdout#info] Lost a client!
+2016-07-15T16:12:28+0530 [stdout#info] Got new client!
+2016-07-15T16:12:30+0530 [stdout#info] received 'hey'
+2016-07-15T16:12:34+0530 [stdout#info] received 'how are you'
+2016-07-15T16:12:37+0530 [stdout#info] received 'I am awesome'
+2016-07-15T16:12:41+0530 [stdout#info] received 'what about you?'
+2016-07-15T16:22:40+0530 [stdout#info] Lost a client!
+2016-07-15T16:22:47+0530 [stdout#info] Got new client!
+2016-07-15T16:23:02+0530 [stdout#info] Lost a client!
+2016-07-15T16:24:10+0530 [stdout#info] Got new client!
+2016-07-15T16:24:10+0530 [stdout#info] Lost a client!
+2016-07-15T16:25:06+0530 [stdout#info] Got new client!
+2016-07-15T16:25:06+0530 [stdout#info] Lost a client!
+2016-07-15T16:25:17+0530 [stdout#info] Got new client!
+2016-07-15T16:25:27+0530 [stdout#info] received 'hey'
+2016-07-15T16:26:08+0530 [stdout#info] Lost a client!
+2016-07-15T16:26:20+0530 [stdout#info] Got new client!
+2016-07-15T16:26:22+0530 [stdout#info] received 'hey'
+2016-07-15T16:26:26+0530 [stdout#info] received 'how'
+2016-07-15T16:26:42+0530 [stdout#info] received 'hello'
+2016-07-15T16:27:20+0530 [stdout#info] Lost a client!
+2016-07-15T16:27:50+0530 [stdout#info] Got new client!
+2016-07-15T16:27:51+0530 [stdout#info] received 'hey'
+2016-07-15T16:27:54+0530 [stdout#info] Lost a client!
+2016-07-15T16:30:02+0530 [stdout#info] Got new client!
+2016-07-15T16:30:03+0530 [stdout#info] received 'hey'
+2016-07-15T16:30:09+0530 [stdout#info] received 'how are you'
+2016-07-15T16:30:38+0530 [stdout#info] Lost a client!
+2016-07-15T16:31:01+0530 [stdout#info] Got new client!
+2016-07-15T16:31:03+0530 [stdout#info] received 'ge'
+2016-07-15T16:31:05+0530 [stdout#info] Lost a client!
+2016-07-15T16:32:17+0530 [stdout#info] Got new client!
+2016-07-15T16:32:18+0530 [stdout#info] received 'j'
+2016-07-15T16:32:21+0530 [stdout#info] Lost a client!
+2016-07-15T16:35:06+0530 [stdout#info] Got new client!
+2016-07-15T16:35:07+0530 [stdout#info] received 'hey'
+2016-07-15T16:35:09+0530 [stdout#info] Lost a client!
+2016-07-15T16:35:38+0530 [stdout#info] Got new client!
+2016-07-15T16:35:40+0530 [stdout#info] received 'hey'
+2016-07-15T16:35:41+0530 [stdout#info] received 'wow'
+2016-07-15T16:35:43+0530 [stdout#info] received 'this'
+2016-07-15T16:35:49+0530 [stdout#info] received 'is'
+2016-07-15T16:35:51+0530 [stdout#info] received 'awesome'
+2016-07-15T16:36:01+0530 [stdout#info] Lost a client!
+2016-07-15T16:37:52+0530 [stdout#info] Got new client!
+2016-07-15T16:37:52+0530 [stdout#info] Lost a client!
+2016-07-15T16:38:06+0530 [stdout#info] Got new client!
+2016-07-15T16:38:08+0530 [stdout#info] received 'hey'
+2016-07-15T16:38:09+0530 [stdout#info] received 'wow'
+2016-07-15T16:38:10+0530 [stdout#info] received 'this'
+2016-07-15T16:38:12+0530 [stdout#info] received 'is'
+2016-07-15T16:38:19+0530 [stdout#info] Lost a client!
+2016-07-15T16:38:33+0530 [stdout#info] Got new client!
+2016-07-15T16:38:35+0530 [stdout#info] received 'hi'
+2016-07-15T16:38:38+0530 [stdout#info] Lost a client!
+2016-07-15T16:39:54+0530 [stdout#info] Got new client!
+2016-07-15T16:40:04+0530 [stdout#info] Lost a client!

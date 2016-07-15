@@ -76,7 +76,7 @@ class LoginController:
 		starti = len('[username] = ')
 		self.USERNAME = l[starti:].strip()
 		starti = len('[repo_uri] = ')
-		self.REPO_URI = l[starti:].strip()
+		self.REPO_URI = m[starti:].strip()
 
 	#method to read .gitchatrc and get status
 	def loginCheck(self):
