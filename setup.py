@@ -25,7 +25,7 @@ def find_version(*file_paths):
 
 
 try:
-    f = codecs.open('README.md', encoding='utf-8')
+    f = codecs.open('README.rst', encoding='utf-8')
     long_description = f.read()
     f.close()
 except:
@@ -33,7 +33,7 @@ except:
 
 
 setup(
-    name='netstat-cl',
+    name='GitChat',
     version=find_version('GitChat.py'),
     description='ChitChat on gitchat. Discuss your projects on gitchat, without even creating chatrooms.',
     long_description=long_description,
