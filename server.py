@@ -45,7 +45,7 @@ class GitChat(basic.LineReceiver):
                     self.factory.clients[line.split(' ')[1]].append(self)
 
                 # DB fetch
-                result = db.chat_db.find({'repo':line.split(' ')[1]})
+                result = db.chat_db.find({'repo':'/^'+line.split(' ')[1]+'$i'})
                 for i in result:
                     self.transport.write(str(i['message']+' '+line.split(' ')[1]+'\n'))
             except KeyError:
