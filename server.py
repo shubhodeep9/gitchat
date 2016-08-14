@@ -26,7 +26,7 @@ DB
     repo:"",
 }
 """
-
+import re
 import pymongo
 from twisted.protocols import basic
 
@@ -45,7 +45,7 @@ class GitChat(basic.LineReceiver):
                     self.factory.clients[line.split(' ')[1]].append(self)
 
                 # DB fetch
-                result = db.chat_db.find({'repo':'/^'+line.split(' ')[1]+'$i'})
+                result = db.chat_db.find({'repo':re.compile(line.split(' ')[1],re.IGNORECASE)})
                 for i in result:
                     self.transport.write(str(i['message']+' '+line.split(' ')[1]+'\n'))
             except KeyError:
