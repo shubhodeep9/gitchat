@@ -16,8 +16,10 @@
 #    under the License.
 
 """ 
-A simple echo client 
-""" 
+The server code that distributes one message from one socket to another
+according to the repository the chat is destined.
+Using dictionary structure
+"""
 import os
 import signal
 from login import LoginController
@@ -31,7 +33,7 @@ def main():
 	if not os.system('clear') == 0:
 		os.system('cls')
 	Execute(login)
-	
+
 
 #method to check if directory is a git repo
 def checkDirectory():

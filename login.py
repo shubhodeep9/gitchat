@@ -66,7 +66,7 @@ class LoginController:
 			import datetime
 			now = datetime.datetime.strftime(datetime.datetime.now(),
 											'%Y-%m-%d %H:%M:%S')
-			f = open('.gitchatrc').read()
+			f = open('.git/.gitchatrc').read()
 			endi = f.find('[logged')+len('[logged_in] = ')
 			content = f[:endi]+now
 			gitchatrc = open('.gitchatrc','w')

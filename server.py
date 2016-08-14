@@ -16,6 +16,11 @@
 #    under the License.
 
 """
+-------------------------------------------------------------------------------
+The server code that distributes one message from one socket to another
+according to the repository the chat is destined.
+Using dictionary structure
+-------------------------------------------------------------------------------
 clients = {
     "some":[]
 }
