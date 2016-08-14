@@ -34,19 +34,19 @@ except:
 
 setup(
     name='GitChat',
-    version=find_version('GitChat.py'),
+    version=find_version('Gitchat.py'),
     description='ChitChat on gitchat. Discuss your projects on gitchat, without even creating chatrooms.',
     long_description=long_description,
     keywords='Ubuntu, Internet speed',
     author='Shubhodeep Mukherjee',
     author_email='shubhodeep9@gmail.com',
-    url='https://github.com/shubhodeep9/python-netstat',
+    url='https://github.com/shubhodeep9/GitChat',
     license='Apache License, Version 2.0',
     install_requires=["urwid","requests"],
-    py_modules=["GitChat","login","ui"],
+    py_modules=["Gitchat","gitchat_login","gitchat_ui"],
     entry_points={
         'console_scripts': [
-            'gitchat=GitChat:main'
+            'gitchat=Gitchat:main'
         ]
     },
     classifiers=[
