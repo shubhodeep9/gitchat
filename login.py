@@ -69,7 +69,7 @@ class LoginController:
 			f = open('.git/.gitchatrc').read()
 			endi = f.find('[logged')+len('[logged_in] = ')
 			content = f[:endi]+now
-			gitchatrc = open('.gitchatrc','w')
+			gitchatrc = open('.git/.gitchatrc','w')
 			gitchatrc.write(content)
 			self.setUser(f.split('\n')[1],f.split('\n')[2])
 
