@@ -21,7 +21,7 @@ ALGORITHM:
 1. get repo link from .git/config
 2. input username and password from user, hit on Git api to get collaborators with param -u "username:password"
 3. Check if status ok (200) then proceed, else if status forbidden (403) SystemExit
-4. save status for future use in the folder inside .gitchatrc
+4. save status for future use in the folder inside .git/.gitchatrc
 """
 
 class LoginController:
@@ -52,9 +52,10 @@ class LoginController:
 				raise SystemExit('Try again later!!')
 			else:
 				#Logged in successfuly
-				gitchatrc = open('.gitchatrc','w')
+				gitchatrc = open('.git/.gitchatrc','w')
 				import datetime
-				now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+				now = datetime.datetime.strftime(datetime.datetime.now(),
+												'%Y-%m-%d %H:%M:%S')
 				content = """[status] = 200
 [username] = %s
 [repo_uri] = %s
@@ -63,7 +64,8 @@ class LoginController:
 				gitchatrc.write(content)
 		else:
 			import datetime
-			now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+			now = datetime.datetime.strftime(datetime.datetime.now(),
+											'%Y-%m-%d %H:%M:%S')
 			f = open('.gitchatrc').read()
 			endi = f.find('[logged')+len('[logged_in] = ')
 			content = f[:endi]+now
@@ -81,7 +83,7 @@ class LoginController:
 	#method to read .gitchatrc and get status
 	def loginCheck(self):
 		try:
-			f = open('.gitchatrc').readline()
+			f = open('.git/.gitchatrc').readline()
 			status = f.split('=')[1].strip()
 			return status == '200'
 		except IOError:

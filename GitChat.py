@@ -19,6 +19,7 @@
 A simple echo client 
 """ 
 import os
+import signal
 from login import LoginController
 from ui import *
 
@@ -39,6 +40,10 @@ def checkDirectory():
 	except IOError:
 		raise SystemExit('Not a git repo')
 
+def nothing(signum,frame):
+	pass
+
 
 if __name__ == '__main__':
+	signal.signal(signal.SIGINT,nothing)
 	main()
