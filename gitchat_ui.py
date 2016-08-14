@@ -164,18 +164,18 @@ class Execute(Commander):
     def __init__(self,login):
         s.send("first "+login.REPO_URI+" "+login.USERNAME)
         c=Commander('['+login.USERNAME+'] GitChat @'+login.REPO_URI, login)
-        try:
-            stored_chat = open('.git/.gitchat_store','rw')
-            read = stored_chat.read()
-            for i in read.split('\n'):
-                if login.USERNAME in i.split(' ')[0]:
-                    c.output(i, 'green')
-                else:
-                    c.output(i, 'blue')
-        except:
-            pass
-        def run():
 
+        def run():
+            try:
+                stored_chat = open('.git/.gitchat_store','rw')
+                read = stored_chat.read()
+                for i in read.split('\n'):
+                    if login.USERNAME in i.split(' ')[0]:
+                        c.output(i, 'green')
+                    else:
+                        c.output(i, 'blue')
+            except:
+                pass
             while True:
                 msg = s.recv(4096)
                 store_chat = open('.git/.gitchat_store','a')
