@@ -15,10 +15,11 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-""" 
-The server code that distributes one message from one socket to another
-according to the repository the chat is destined.
-Using dictionary structure
+"""
+The application focuses on making development easy for developers using
+github.com. Kindly follow method docstrings to understand the flow.
+To contribute, please follow PEP8, and do notify if the code doesn't follow
+PEP8.
 """
 import os
 import signal
@@ -41,10 +42,10 @@ def checkDirectory():
 		open('.git/config')
 	except IOError:
 		raise SystemExit('Not a git repo')
-
+		
+#Method used to prevent Ctrl^C program exit
 def nothing(signum,frame):
 	pass
-
 
 if __name__ == '__main__':
 	signal.signal(signal.SIGINT,nothing)

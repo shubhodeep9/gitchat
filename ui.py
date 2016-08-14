@@ -162,18 +162,28 @@ You can also asynchronously output messages with Commander.output('message') """
 
 class Execute(Commander):
     def __init__(self,login):
-        s.send("first "+login.REPO_URI)
+        s.send("first "+login.REPO_URI+" "+login.USERNAME)
         c=Commander('['+login.USERNAME+'] GitChat @'+login.REPO_URI, login)
         def run():
+            stored_chat = open('.git/.gitchat_store')
+            read = stored_chat.read()
+            for i in read.split('\n'):
+                if login.USERNAME in i.split(' ')[0]:
+                    c.output(i, 'green')
+                else:
+                    c.output(i, 'blue')
             while True:
                 msg = s.recv(4096)
+                store_chat = open('.git/.gitchat_store','w')
                 msg = msg.replace(login.REPO_URI,'')
                 li = msg.split('\n')
                 for i in li:
+                    store_chat.write(i+"\n")
                     if login.USERNAME in i.split(' ')[0]:
                         c.output(i, 'green')
                     else:
                         c.output(i, 'blue')
+
 
         t=Thread(target=run)
         t.daemon=True

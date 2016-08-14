@@ -24,14 +24,26 @@ Using dictionary structure
 clients = {
     "some":[]
 }
-
 DB
+chat_db :=
 {
     message: "",
     repo:"",
+    users:[
+    "",
+    ""
+    ]
+}
+
+repo_db :=
+{
+    repo:"",
+    users:[
+
+    ]
 }
 """
-
+import re
 import pymongo
 from twisted.protocols import basic
 
@@ -41,34 +53,51 @@ class GitChat(basic.LineReceiver):
     def dataReceived(self, line):
         if line.split(' ')[0] == 'first':
             try:
+                first,repo,username = line.split(' ')
                 ct = 0
-                for i in self.factory.clients[line.split(' ')[1]]:
+                repo_db = db.repo_db.find_one({'repo':re.compile(repo,re.IGNORECASE)})
+                if not bool(repo_db):
+                    db.repo_db.insert({'repo':repo,'users':[username]})
+                else:
+                    if username not in repo_db['users']:
+                        db.repo_db.update({'_id':repo_db['_id']},{'$push':{'users':username}})
+                for i in self.factory.clients[repo]:
                     if i == self:
                         ct = ct + 1
                         break
                 if ct==0:
-                    self.factory.clients[line.split(' ')[1]].append(self)
-
+                    self.factory.clients[repo].append(self)
+                # self.factory.client_to_ref[username] = self
                 # DB fetch
-                result = db.chat_db.find({'repo':line.split(' ')[1]})
+                result = db.chat_db.find({'repo':re.compile(repo,re.IGNORECASE)})
                 for i in result:
-                    self.transport.write(str(i['message']+' '+line.split(' ')[1]+'\n'))
+                    if username in i['users']:
+                        self.transport.write(str(i['message']+' '+line.split(' ')[1]+'\n'))
+                db.chat_db.update({'repo':re.compile(repo,re.IGNORECASE)},{'$pull':{'users':username}})
             except KeyError:
                 self.factory.clients[line.split(' ')[1]] = [self]
         elif line.split(' ')[0] == 'exit':
             user = line.split(' ')[1]
             repo = line.split(' ')[2]
             self.factory.clients[repo].remove(self)
+            # self.factory.client_to_ref.remove(user)
         else:
             repo = line.split(' ')
             repo = repo[len(repo)-1]
+            read_clients = []
             for c in self.factory.clients[repo]:
                 c.transport.write(line)
-            self.message(line)
+                read_clients.append(c)
+            self.message(line,read_clients)
 
-    def message(self, message):
+    def message(self, message, read_clients):
         content = message.split(' ')
-        db.chat_db.insert({'repo':content[len(content)-1],'message':' '.join(content[:len(content)-1])})
+        repo = content[len(content)-1]
+        repo_users = db.repo_db.find_one({'repo':re.compile(repo,re.IGNORECASE)})['users']
+        repo_to_go = set(repo_users) - set(read_clients)
+        repo_to_go = list(repo_to_go)
+        db.chat_db.insert({'repo':repo,
+                           'message':' '.join(content[:len(content)-1]),'users':repo_to_go})
 
 
 from twisted.internet import protocol
