@@ -174,7 +174,7 @@ class Execute(Commander):
                     c.output(i, 'blue')
             while True:
                 msg = s.recv(4096)
-                store_chat = open('.git/.gitchat_store','w')
+                store_chat = open('.git/.gitchat_store','a')
                 msg = msg.replace(login.REPO_URI,'')
                 li = msg.split('\n')
                 for i in li:
