@@ -67,7 +67,7 @@ class GitChat(basic.LineReceiver):
                         break
                 if ct==0:
                     self.factory.clients[repo].append(self)
-                # self.factory.client_to_ref[username] = self
+                self.factory.client_to_ref[username] = self
                 # DB fetch
                 result = db.chat_db.find({'repo':re.compile(repo,re.IGNORECASE)})
                 for i in result:
@@ -80,7 +80,7 @@ class GitChat(basic.LineReceiver):
             user = line.split(' ')[1]
             repo = line.split(' ')[2]
             self.factory.clients[repo].remove(self)
-            # self.factory.client_to_ref.remove(user)
+            self.factory.client_to_ref.remove(user)
         else:
             repo = line.split(' ')
             repo = repo[len(repo)-1]
@@ -94,7 +94,10 @@ class GitChat(basic.LineReceiver):
         content = message.split(' ')
         repo = content[len(content)-1]
         repo_users = db.repo_db.find_one({'repo':re.compile(repo,re.IGNORECASE)})['users']
-        repo_to_go = set(repo_users) - set(read_clients)
+        real_read_clients = []
+        for i in read_clients:
+            real_read_clients.append(self.factory.client_to_ref.keys()[self.factory.client_to_ref.values().index(i)])
+        repo_to_go = set(repo_users) - set(real_read_clients)
         repo_to_go = list(repo_to_go)
         db.chat_db.insert({'repo':repo,
                            'message':' '.join(content[:len(content)-1]),'users':repo_to_go})
@@ -106,6 +109,7 @@ from twisted.application import service, internet
 factory = protocol.ServerFactory()
 factory.protocol = GitChat
 factory.clients = {}
+factory.client_to_ref = {}
 
 application = service.Application("chatserver")
 internet.TCPServer(1025, factory).setServiceParent(application)
