@@ -28,25 +28,28 @@ from gitchat_ui import *
 
 __version__ = '0.1.0'
 
+
 def main():
-	checkDirectory()
-	login = LoginController()
-	if not os.system('clear') == 0:
-		os.system('cls')
-	Execute(login)
+    checkDirectory()
+    login = LoginController()
+    if not os.system('clear') == 0:
+        os.system('cls')
+    Execute(login)
 
 
-#method to check if directory is a git repo
+# method to check if directory is a git repo
 def checkDirectory():
-	try:
-		open('.git/config')
-	except IOError:
-		raise SystemExit('Not a git repo')
+    try:
+        open('.git/config')
+    except IOError:
+        raise SystemExit('Not a git repo')
 
-#Method used to prevent Ctrl^C program exit
-def nothing(signum,frame):
-	pass
+# Method used to prevent Ctrl^C program exit
+
+
+def nothing(signum, frame):
+    pass
 
 if __name__ == '__main__':
-	signal.signal(signal.SIGINT,nothing)
-	main()
+    signal.signal(signal.SIGINT, nothing)
+    main()
