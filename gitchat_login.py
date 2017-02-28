@@ -67,12 +67,12 @@ class LoginController:
             import datetime
             now = datetime.datetime.strftime(datetime.datetime.now(),
                                              '%Y-%m-%d %H:%M:%S')
-            with open('.git/gitchat_login.json','r+') as login_file:
-            	data = json.load(login_file)
-            	data["logged_in"] = now
-            	login_file.seek(0)
-            	login_file.write(json.dumps(data))
-            	login_file.truncate()
+            with open('.git/gitchat_login.json', 'r+') as login_file:
+                data = json.load(login_file)
+                data["logged_in"] = now
+                login_file.seek(0)
+                login_file.write(json.dumps(data))
+                login_file.truncate()
             self.setUser(data)
 
     # method to setUsername from file
