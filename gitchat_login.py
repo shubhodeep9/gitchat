@@ -19,17 +19,15 @@
 Controller for Sign In Verification
 ALGORITHM:
 1. get repo link from .git/config
-2. input username and password from user, hit on Git api to get collaborators with param -u "username:password"
-3. Check if status ok (200) then proceed, else if status forbidden (403) SystemExit
+2. input username and password from user, hit on Git api to get
+collaborators with param -u "username:password"
+3. Check if status ok (200) then proceed, else if status forbidden
+(403) SystemExit
 4. save status for future use in the folder inside .git/.gitchatrc
 """
 
 
 class LoginController:
-    # Class variables
-    REPO_URI = ''
-    STATUS_CODE = 0
-    USERNAME = ''
 
     # Object Initiated
     def __init__(self):
@@ -52,7 +50,7 @@ class LoginController:
             if not log_count:
                 raise SystemExit('Try again later!!')
             else:
-                #Logged in successfuly
+                # Logged in successfuly
                 gitchatrc = open('.git/.gitchatrc', 'w')
                 import datetime
                 now = datetime.datetime.strftime(datetime.datetime.now(),
@@ -83,10 +81,21 @@ class LoginController:
 
     # method to read .gitchatrc and get status
     def loginCheck(self):
+    	"""
+    	json file structure
+    	{
+			"status" : 200,
+			"username" : "shubhodeep9",
+			"repo_url" : "url",
+			"logged_in" : "YYYY-MM-DD HH:MM:SS"
+    	}
+    	"""
         try:
-            f = open('.git/.gitchatrc').readline()
-            status = f.split('=')[1].strip()
-            return status == '200'
+            import json
+            with open('.git/gitchat_login.json','r') as login_file:
+                data = json.load(login_file)
+            status = data["status"]
+            return status == 200
         except IOError:
             return False
 

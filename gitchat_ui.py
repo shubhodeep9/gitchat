@@ -96,7 +96,9 @@ class Commander(urwid.Frame):
     similar to chat client etc.
     Initialize with your Command instance to execute commands
     and the start main loop Commander.loop().
-    You can also asynchronously output messages with Commander.output('message') """
+    You can also asynchronously output messages with
+    Commander.output('message')
+    """
 
     class Exit(object):
         pass
