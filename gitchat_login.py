@@ -25,6 +25,7 @@ collaborators with param -u "username:password"
 (403) SystemExit
 4. save status for future use in the folder inside .git/.gitchatrc
 """
+import json
 
 
 class LoginController:
@@ -51,48 +52,47 @@ class LoginController:
                 raise SystemExit('Try again later!!')
             else:
                 # Logged in successfuly
-                gitchatrc = open('.git/.gitchatrc', 'w')
                 import datetime
                 now = datetime.datetime.strftime(datetime.datetime.now(),
                                                  '%Y-%m-%d %H:%M:%S')
-                content = ("[status] = 200"
-                           "[username] = %s"
-                           "[repo_uri] = %s"
-                           "[logged_in] = %s") % (self.USERNAME,
-                                                  self.REPO_URI, now)
-                gitchatrc.write(content)
+                content = {
+                    "status": 200,
+                    "username": self.USERNAME,
+                    "repo_uri": self.REPO_URI,
+                    "logged_in": now
+                }
+                with open('.git/gitchat_login.json', 'w') as login_file:
+                    json.dump(content, login_file)
         else:
             import datetime
             now = datetime.datetime.strftime(datetime.datetime.now(),
                                              '%Y-%m-%d %H:%M:%S')
-            f = open('.git/.gitchatrc').read()
-            endi = f.find('[logged')+len('[logged_in] = ')
-            content = f[:endi]+now
-            gitchatrc = open('.git/.gitchatrc', 'w')
-            gitchatrc.write(content)
-            self.setUser(f.split('\n')[1], f.split('\n')[2])
+            with open('.git/gitchat_login.json','r+') as login_file:
+            	data = json.load(login_file)
+            	data["logged_in"] = now
+            	login_file.seek(0)
+            	login_file.write(json.dumps(data))
+            	login_file.truncate()
+            self.setUser(data)
 
     # method to setUsername from file
-    def setUser(self, l, m):
-        starti = len('[username] = ')
-        self.USERNAME = l[starti:].strip()
-        starti = len('[repo_uri] = ')
-        self.REPO_URI = m[starti:].strip()
+    def setUser(self, data):
+        self.USERNAME = data["username"]
+        self.REPO_URI = data["repo_uri"]
 
     # method to read .gitchatrc and get status
     def loginCheck(self):
-    	"""
-    	json file structure
-    	{
-			"status" : 200,
-			"username" : "shubhodeep9",
-			"repo_url" : "url",
-			"logged_in" : "YYYY-MM-DD HH:MM:SS"
-    	}
-    	"""
+        """
+        json file structure
+        {
+                        "status" : 200,
+                        "username" : "shubhodeep9",
+                        "repo_url" : "url",
+                        "logged_in" : "YYYY-MM-DD HH:MM:SS"
+        }
+        """
         try:
-            import json
-            with open('.git/gitchat_login.json','r') as login_file:
+            with open('.git/gitchat_login.json', 'r') as login_file:
                 data = json.load(login_file)
             status = data["status"]
             return status == 200
