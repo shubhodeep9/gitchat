@@ -7,6 +7,7 @@ Chat Client:
 
  ☐ Convert the chat log from plain text to json
  ☐ Pass json encoded string from client to server on tcp with encryption
+ ☐ UI Tweaks and additions
 
 Chat Server:
 
