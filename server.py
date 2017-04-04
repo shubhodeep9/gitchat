@@ -49,41 +49,47 @@ from twisted.protocols import basic
 
 db = pymongo.MongoClient().gitchat
 
+
 class GitChat(basic.LineReceiver):
+
     def dataReceived(self, line):
+        print line
         if line.split(' ')[0] == 'first':
-            first,repo,username = line.split(' ')
-            repo_db = db.repo_db.find_one({'repo':re.compile(repo,re.IGNORECASE)})
-            if not bool(repo_db):
-                db.repo_db.insert({'repo':repo,'users':[username]})
-            else:
-                if username not in repo_db['users']:
-                    db.repo_db.update({'_id':repo_db['_id']},{'$push':{'users':username}})
             try:
-
+                first, repo, username = line.split(' ')
                 ct = 0
-
+                repo_db = db.repo_db.find_one(
+                    {'repo': re.compile(repo, re.IGNORECASE)})
+                if not bool(repo_db):
+                    db.repo_db.insert({'repo': repo, 'users': [username]})
+                else:
+                    if username not in repo_db['users']:
+                        db.repo_db.update({'_id': repo_db['_id']}, {
+                                          '$push': {'users': username}})
                 for i in self.factory.clients[repo]:
                     if i == self:
                         ct = ct + 1
                         break
-                if ct==0:
+                if ct == 0:
                     self.factory.clients[repo].append(self)
+                print ct
+                self.factory.client_to_ref[username] = self
                 # DB fetch
-
+                result = db.chat_db.find(
+                    {'repo': re.compile(repo, re.IGNORECASE)})
+                for i in result:
+                    if username in i['users']:
+                        self.transport.write(
+                            str(i['message']+' '+line.split(' ')[1]+'\n'))
+                db.chat_db.update({'repo': re.compile(repo, re.IGNORECASE)}, {
+                                  '$pull': {'users': username}})
             except KeyError:
                 self.factory.clients[line.split(' ')[1]] = [self]
-            result = db.chat_db.find({'repo':re.compile(repo,re.IGNORECASE)})
-            for i in result:
-                if username in i['users']:
-                    self.transport.write(str(i['message']+' '+line.split(' ')[1]+'\n'))
-            db.chat_db.update({'repo':re.compile(repo,re.IGNORECASE)},{'$pull':{'users':username}})
-            self.factory.client_to_ref[self] = username
         elif line.split(' ')[0] == 'exit':
             user = line.split(' ')[1]
             repo = line.split(' ')[2]
             self.factory.clients[repo].remove(self)
-            del self.factory.client_to_ref[self]
+            del self.factory.client_to_ref[user]
         else:
             repo = line.split(' ')
             repo = repo[len(repo)-1]
@@ -91,20 +97,25 @@ class GitChat(basic.LineReceiver):
             for c in self.factory.clients[repo]:
                 c.transport.write(line)
                 read_clients.append(c)
-            self.message(line,read_clients)
+            self.message(line, read_clients)
 
     def message(self, message, read_clients):
         content = message.split(' ')
         repo = content[len(content)-1]
-        repo_users = db.repo_db.find_one({'repo':re.compile(repo,re.IGNORECASE)})['users']
+        repo_users = db.repo_db.find_one(
+            {'repo': re.compile(repo, re.IGNORECASE)})['users']
         real_read_clients = []
-        print self.factory.client_to_ref
-        for i in read_clients:
-            real_read_clients.append(self.factory.client_to_ref[i])
-        repo_to_go = set(repo_users) - set(real_read_clients)
-        repo_to_go = list(repo_to_go)
-        db.chat_db.insert({'repo':repo,
-                           'message':' '.join(content[:len(content)-1]),'users':repo_to_go})
+        try:
+            for i in read_clients:
+                real_read_clients.append(self.factory.client_to_ref.keys()[
+                                         self.factory.client_to_ref.values().index(i)
+                                         ])
+            repo_to_go = set(repo_users) - set(real_read_clients)
+            repo_to_go = list(repo_to_go)
+            db.chat_db.insert({'repo': repo,
+                               'message': ' '.join(content[:len(content)-1]), 'users': repo_to_go})
+        except:
+            print self.factory.client_to_ref.values()
 
 
 from twisted.internet import protocol

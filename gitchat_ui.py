@@ -19,6 +19,7 @@ import urwid
 from collections import deque
 from threading import Thread
 import threading
+import json
 
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -131,7 +132,9 @@ class Commander(urwid.Frame):
                              foot)
         self.set_focus_path(['footer', 1])
         self._focus = True
-        urwid.connect_signal(self.input, 'line_entered', self.on_line_entered)
+        urwid.connect_signal(self.input,
+                             'line_entered',
+                             self.on_line_entered)
         self._output_styles = [s[0] for s in self.PALLETE]
         self.eloop = None
         self.login = login
@@ -179,7 +182,8 @@ class Execute(Commander):
 
     def __init__(self, login):
         s.send("first "+login.REPO_URI+" "+login.USERNAME)
-        c = Commander('['+login.USERNAME+'] GitChat @'+login.REPO_URI, login)
+        commanderUI = Commander(
+            '['+login.USERNAME+'] GitChat @'+login.REPO_URI, login)
 
         def run():
             try:
@@ -187,26 +191,27 @@ class Execute(Commander):
                 read = stored_chat.read()
                 for i in read.split('\n'):
                     if login.USERNAME in i.split(' ')[0]:
-                        c.output(i, 'green')
+                        commanderUI.output(i, 'green')
                     else:
-                        c.output(i, 'blue')
+                        commanderUI.output(i, 'blue')
             except:
                 pass
             while True:
                 msg = s.recv(4096)
-                store_chat = open('.git/.gitchat_store', 'a')
+                store_chat = open('.git/gitchat_store.json', 'a')
                 msg = msg.replace(login.REPO_URI, '')
                 li = msg.split('\n')
                 for i in li:
-                    store_chat.write(i+"\n")
+
+                    store_chat.write(i)
                     if login.USERNAME in i.split(' ')[0]:
-                        c.output(i, 'green')
+                        commanderUI.output(i, 'green')
                     else:
-                        c.output(i, 'blue')
+                        commanderUI.output(i, 'blue')
 
         t = Thread(target=run)
         t.daemon = True
         t.start()
 
         # start main loop
-        c.loop()
+        commanderUI.loop()

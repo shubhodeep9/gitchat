@@ -44,11 +44,11 @@ def checkDirectory():
     except IOError:
         raise SystemExit('Not a git repo')
 
+
 # Method used to prevent Ctrl^C program exit
-
-
 def nothing(signum, frame):
     pass
+
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, nothing)
